@@ -1,0 +1,64 @@
+# Visual Studio files
+*.suo
+*.user
+
+# Build Output
+bin/
+obj/
+packages/
+environment.txt
+CommonAssemblyInfo.cs
+
+# Build Output - Test Results
+NUnitTestResults.xml
+
+# Build Output - Approval Tests
+*.received.txt
+
+# Build Output - Config Transforms
+BGCFionaTestBed/code/BGCTestBed/web.config
+BGListenerApp/code/BGListenerApp/web.config
+BillingMasterComponent/code/BillingMasterComponent/app.config
+KORE.GenerateMonthlyUsageFiles/code/KORE.GenerateMonthlyUsageFiles/app.config
+KORE.MessageScheduler/code/KORE.MessageScheduler/app.config
+KORE.SCUBatchService/code/KORE.SCUBatchService/app.config
+KORE.Subscribers.BillRunAccepted/code/KORE.Subscribers.BillRunAccepted/app.config
+KORE.Subscribers.CdrReconciliationService/code/KORE.Subscribers.CdrReconciliationService/app.config
+KORE.Subscribers.ReportService/code/KORE.Subscribers.ReportService/app.config
+KoreLogging/code/MessageService/web.config
+MTMKOilListener/code/MTMKOilListener/web.config
+MobileServicesReportingExporter/code/MobileServicesReportingExporter/app.config
+PRISMPro/code/KORE.PRISMPro.UI/web.config
+SIDExtractEngine/code/SIDExtractEngine/app.config
+SIDPlatformAlertingSubsystem_B/code/SIDPlatformAlertingSystem/app.config
+SIDWebClient/code/KORE.SIDWebClient.UI/web.config
+SIMService/code/SIMService/web.config
+SIMTransitionService/code/SIMTransitionService/web.config
+SMPPService/code/SMPPService/web.config
+SMPPService/code/SMPPThrottlingService/app.config
+ScraperPro/code/ScraperPro.Presentation.Console/app.config
+SimStateTranstionTimer/code/SimStateTranstionTimer/app.config
+TableCopyToolProduction/code/dbTableCopySilent/app.config
+
+# Build Output - Shared Code packages
+Parser/Kore.Parser.BGC.*
+Provisioning/Kore.Provisioning.Belgacom.*
+
+# Build Output - SQL Debug files
+sql/code/Files/sql/debug/
+sql/code/Logging/sql/debug/
+sql/code/Resource/sql/debug/
+sql/code/Scraper/sql/debug/
+sql/code/FE/sql/debug/
+sql/code/BE/sql/debug/
+*.dbmdl
+sql/code/BE/BE.dbproj.schemaview
+.gitignore.orig
+sql/code/FE/FE.dbproj.BACKUP.5996.dbproj
+sql/code/FE/FE.dbproj.BASE.5996.dbproj
+sql/code/FE/FE.dbproj.LOCAL.5996.dbproj
+sql/code/FE/FE.dbproj.REMOTE.5996.dbproj
+sql/code/FE/FE.dbproj.orig
+*.dbproj.user
+
+MTMKTestBeds/code/EmailSMSTestBed/EmailTestBed/Backup/
