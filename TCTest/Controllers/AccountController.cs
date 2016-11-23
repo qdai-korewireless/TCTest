@@ -25,7 +25,7 @@ namespace TCTest.Controllers
 
         public AccountController(ApplicationUserManager userManager)
         {
-            UserManager = userManager1;
+            UserManager = userManager;
         }
 
         public ApplicationUserManager UserManager {
