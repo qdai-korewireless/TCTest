@@ -1,0 +1,19 @@
+<?xml version='1.0'?>
+<package xmlns='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd'>
+  <metadata>
+    <id>PKG_NAME_TOKEN</id>
+    <version>0.0</version>
+    <title>KORE Platform (Belgacom ENV_NAME_TOKEN)</title>
+    <authors>KORE Wireless Canada Inc.</authors>
+    <description>KORE Platform (Belgacom ENV_NAME_TOKEN)</description>
+    <releaseNotes/>
+    <copyright/>
+    <language>en-US</language>
+    <projectUrl>http://www.koretelematics.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  </metadata>
+  <files>
+    <file src='..\tools\**.ps1' target='tools'/>
+    <file src='..\..\PKG_FOLDER_TOKEN\**' target='content'/>
+  </files>
+</package>

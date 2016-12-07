@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <BuildDependsOn>TransformConfigFiles;$(BuildDependsOn)</BuildDependsOn>
+    <EnvironmentFile>$(SourceTreeRootDir)environment.txt</EnvironmentFile>
+  </PropertyGroup>
+  <UsingTask TaskName="TransformXml" AssemblyFile="$(SourceTreeRootDir)\.tools\MSBuild.Microsoft.VisualStudio.Web.targets.10.0.3\tools\VSToolsPath\Web\Microsoft.Web.Publishing.Tasks.dll" />
+  <Target Name="SetEnvironment" Condition="'$(Environment)'==''" DependsOnTargets="LoadEnvironmentFromFile;SetDefaultEnvironment" />
+  <Target Name="LoadEnvironmentFromFile" Condition="Exists('$(EnvironmentFile)')" >
+    <ReadLinesFromFile File="$(EnvironmentFile)" >
+      <Output TaskParameter="Lines" ItemName="EnvironmentTxtLines"/>
+    </ReadLinesFromFile>
+    <CreateProperty Value="%(EnvironmentTxtLines.Identity)">
+      <Output PropertyName="Environment" TaskParameter="Value"/>
+    </CreateProperty>
+    <Message Text="Environment set to '$(Environment)' as specified in $(EnvironmentFile)."/>
+  </Target>
+  <Target Name="SetDefaultEnvironment" Condition="!Exists('$(EnvironmentFile)')" >
+    <PropertyGroup>
+      <Environment>$(Configuration)</Environment>
+    </PropertyGroup>
+    <Message Text="Environment set to default '$(Environment)'. To override, please either create environment file '$(EnvironmentFile)' or specify 'Environment' parameter."/>
+  </Target>
+  <Target Name="TransformConfigFiles" DependsOnTargets="SetEnvironment;TransformWebConfig;TransformAppConfig" />
+  <Target Name="TransformWebConfig">
+    <PropertyGroup>
+      <WebConfigBase>$(MSBuildProjectDirectory)\web.base.config</WebConfigBase>
+    </PropertyGroup>
+    <TransformXml
+      Condition="Exists($(WebConfigBase))"
+      Source="$(WebConfigBase)"
+      Transform="$(MSBuildProjectDirectory)\web.$(Environment).config"
+      Destination="$(MSBuildProjectDirectory)\web.config"
+    />
+    <Message Condition="!Exists($(WebConfigBase))" Text="$(WebConfigBase) not found ... skipping." />
+  </Target>
+  <Target Name="TransformAppConfig">
+    <PropertyGroup>
+      <AppConfigBase>$(MSBuildProjectDirectory)\app.base.config</AppConfigBase>
+    </PropertyGroup>
+    <TransformXml
+      Condition="Exists($(AppConfigBase))"
+      Source="$(AppConfigBase)"
+      Transform="$(MSBuildProjectDirectory)\app.$(Environment).config"
+      Destination="$(MSBuildProjectDirectory)\app.config"
+    />
+    <Message Condition="!Exists($(AppConfigBase))" Text="$(AppConfigBase) not found ... skipping." />
+  </Target>
+</Project>

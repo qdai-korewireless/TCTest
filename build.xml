@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build;Test;" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<PropertyGroup Label="Build Settings">
+	<Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
+	<SolutionPlatform Condition="'$(SolutionPlatform)'==''">Any CPU</SolutionPlatform>
+	<ProjectPlatform Condition="'$(ProjectPlatform)'==''">AnyCPU</ProjectPlatform>
+	<Revision Condition="'$(Revision)'==''">0</Revision>
+</PropertyGroup>
+
+<PropertyGroup Label="Build Directories">
+	<BaseDir>$(MSBuildThisFileDirectory)</BaseDir>
+	<BuildDir>$(BaseDir).build\</BuildDir>
+	<OutputDir>$(BaseDir)bin\KorePlatform\</OutputDir>
+	<DbOutputDir>$(BaseDir)bin\Database\</DbOutputDir>
+	<CommonTargetsDir>$(BaseDir).tools\MSBuild\</CommonTargetsDir>
+</PropertyGroup>
+
+<PropertyGroup Label="Files">
+	<VersionStemFile>$(BaseDir)version.txt</VersionStemFile>
+	<Gen3ParserPackageFile>$(BaseDir)Parser\packages.config</Gen3ParserPackageFile>
+	<Gen3ProvisioningPackageFile>$(BaseDir)Provisioning\packages.config</Gen3ProvisioningPackageFile>
+</PropertyGroup>
+
+<PropertyGroup Label="Tools">
+	<ToolsDir>$(BaseDir).tools\</ToolsDir>
+	<NugetDir>$(ToolsDir)NuGet\</NugetDir>
+	<MSBuildTasksVersion>1.4.0.88</MSBuildTasksVersion>
+	<MSBuildCommunityTasksPath>$(ToolsDir)MSBuildTasks.$(MSBuildTasksVersion)\tools\</MSBuildCommunityTasksPath>
+	<ExtensionTasksPath>$(ToolsDir)\MSBuild.Extension.Pack.1.5.0\tools\net40\</ExtensionTasksPath>
+	<XUnitRunnerVersion>1.9.2</XUnitRunnerVersion>
+	<XUnitRunnerTasksPath>$(ToolsDir)xUnit.NET\$(XUnitRunnerVersion)\</XUnitRunnerTasksPath>
+	<NUnitRunnerVersion>2.6.3</NUnitRunnerVersion>
+	<NUnitRunnerTasksPath>$(BaseDir)packages\NUnit.Runners.$(NunitRunnerVersion)\tools\</NUnitRunnerTasksPath>
+</PropertyGroup>
+<ItemGroup>
+	<AllSolutions Include="$(BaseDir)TCTest.sln"/>
+</ItemGroup>
+
+<ItemGroup>
+	<WebProjects Include="$(BaseDir)TCTest\TCTest.csproj"/>
+</ItemGroup>
+
+<Import Project="$(MSBuildCommunityTasksPath)MSBuild.Community.Tasks.Targets"/>
+<Import Project="$(ExtensionTasksPath)\MSBuild.ExtensionPack.tasks"/>
+<Import Project="$(CommonTargetsDir)CommonAssemblyInfo.targets" />
+
+<Target Name="Build" DependsOnTargets="$(BuildDependsOn)"/>
+<Target Name="Package" DependsOnTargets="$(PackageDependsOn)"/>
+<Target Name="Test" DependsOnTargets="$(TestDependsOn)"/>
+<Target Name="CIBuild" DependsOnTargets="$(CIBuildDependsOn)"/>
+
+<PropertyGroup Label="DependencyChains">
+    <CIBuildDependsOn>
+      Build;
+      Test;
+      Package
+    </CIBuildDependsOn>
+    <BuildDependsOn>
+      BuildAllSolutions
+    </BuildDependsOn>
+
+    <PackageDependsOn>
+    </PackageDependsOn>
+
+    <TestDependsOn>
+    </TestDependsOn>
+</PropertyGroup>
+
+<Target Name="BuildAllSolutions" DependsOnTargets="RestoreNuGetPackages" >
+	<PropertyGroup>
+	  <PropertiesForMSBuild>
+		Configuration=$(Configuration);
+		Platform=$(SolutionPlatform);
+	  </PropertiesForMSBuild>
+	</PropertyGroup>
+	<MSBuild Projects="%(AllSolutions.Identity)" Properties="@(PropertiesForMSBuild)" />
+</Target>
+
+<Target Name="RestoreNuGetPackages" >
+	<NuGetRestore ToolPath="$(NugetDir)"
+			  Solution="%(AllSolutions.Identity)"
+			  PackagesDirectory="%(AllSolutions.RootDir)%(AllSolutions.Directory)packages\"
+			  />
+</Target>
+</Project>
