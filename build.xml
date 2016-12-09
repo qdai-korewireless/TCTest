@@ -10,7 +10,7 @@
 <PropertyGroup Label="Build Directories">
 	<BaseDir>$(MSBuildThisFileDirectory)</BaseDir>
 	<BuildDir>$(BaseDir).build\</BuildDir>
-	<OutputDir>$(BaseDir)bin\KorePlatform\</OutputDir>
+	<OutputDir>D:\www\Dummy\</OutputDir>
 	<DbOutputDir>$(BaseDir)bin\Database\</DbOutputDir>
 	<CommonTargetsDir>$(BaseDir).tools\MSBuild\</CommonTargetsDir>
 </PropertyGroup>
@@ -60,6 +60,7 @@
     </BuildDependsOn>
 
     <PackageDependsOn>
+    	PackageWebProjects
     </PackageDependsOn>
 
     <TestDependsOn>
@@ -81,5 +82,21 @@
 			  Solution="%(AllSolutions.Identity)"
 			  PackagesDirectory="%(AllSolutions.RootDir)%(AllSolutions.Directory)packages\"
 			  />
+</Target>
+<Target Name="PackageWebProjects">
+	<PropertyGroup>
+	  <PropertiesForMSBuild>
+	    Configuration=$(Configuration);
+	    Platform=$(ProjectPlatform);
+	    AutoParameterizationWebConfigConnectionStrings=false;
+	  </PropertiesForMSBuild>
+	</PropertyGroup>
+
+	<MSBuild Projects="%(WebProjects.Identity)" Properties="@(PropertiesForMSBuild);PublishDestination=$(OutputDir)" Targets="PublishToFileSystem;Package"/>
+
+	<ItemGroup>
+	  <PDBFiles Include="$(OutputDir)%(WebProjects.FileName)\**\*.pdb"/>
+	</ItemGroup>
+	<Delete Files="@(PDBFiles)" />
 </Target>
 </Project>
