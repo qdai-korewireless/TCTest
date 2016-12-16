@@ -64,7 +64,6 @@
     </PackageDependsOn>
 
     <TestDependsOn>
-    	RestoreBuildToolPackages;
     	RunNUnitTests
     </TestDependsOn>
 </PropertyGroup>
@@ -78,12 +77,7 @@
 	</PropertyGroup>
 	<MSBuild Projects="%(AllSolutions.Identity)" Properties="@(PropertiesForMSBuild)" />
 </Target>
-<Target Name="RestoreBuildToolPackages" >
-	<NuGetRestore ToolPath="$(NugetDir)"
-	              Solution="$(BaseDir)packages.config"
-	              PackagesDirectory="$(BaseDir)packages\"
-	              />
-</Target>
+
 <Target Name="RestoreNuGetPackages" >
 	<NuGetRestore ToolPath="$(NugetDir)"
 			  Solution="%(AllSolutions.Identity)"
