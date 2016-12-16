@@ -30,7 +30,7 @@
 	<XUnitRunnerVersion>1.9.2</XUnitRunnerVersion>
 	<XUnitRunnerTasksPath>$(ToolsDir)xUnit.NET\$(XUnitRunnerVersion)\</XUnitRunnerTasksPath>
 	<NUnitRunnerVersion>2.6.3</NUnitRunnerVersion>
-	<NUnitRunnerTasksPath>$(BaseDir)packages\NUnit.Runners.$(NunitRunnerVersion)\tools\</NUnitRunnerTasksPath>
+	<NUnitRunnerTasksPath>$(BaseDir).tools\NUnit\$(NunitRunnerVersion)\</NUnitRunnerTasksPath>
 </PropertyGroup>
 <ItemGroup>
 	<AllSolutions Include="$(BaseDir)TCTest.sln"/>
@@ -64,6 +64,7 @@
     </PackageDependsOn>
 
     <TestDependsOn>
+    	RunNUnitTests
     </TestDependsOn>
 </PropertyGroup>
 
@@ -98,5 +99,11 @@
 	  <PDBFiles Include="$(OutputDir)%(WebProjects.FileName)\**\*.pdb"/>
 	</ItemGroup>
 	<Delete Files="@(PDBFiles)" />
+</Target>
+<Target Name="RunNUnitTests" >
+	<ItemGroup>
+	  <NUnitTestAssemblies Include="$(BaseDir)TCTest.Tests\bin\$(Configuration)\TCTest.Tests.dll" />
+	</ItemGroup>
+	<nunit ToolPath="$(NUnitRunnerTasksPath)" Assemblies="@(NUnitTestAssemblies)" OutputXMLFile="$(BaseDir)NUnitTestResults.xml" />
 </Target>
 </Project>
